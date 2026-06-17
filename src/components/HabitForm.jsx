@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
+import HabitCard from './HabitCard';
 
 export default function HabitForm() {
   const [name, setName] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const [daysSelected, setDaysSelected] = useState([]);
 
   const [storedHabits, setStoredHabits] = useState(
     JSON.parse(localStorage.getItem('habit')),
@@ -13,10 +16,9 @@ export default function HabitForm() {
 
   return (
     <div>
-      <h2>Add a New Habit</h2>
       <form>
-        <label htmlFor="habit-name">Habit Name:</label>{' '}
         <input
+        //   placeholder="Add a new habit.."
           required
           type="text"
           value={name}
@@ -27,12 +29,19 @@ export default function HabitForm() {
           onClick={() => {
             setStoredHabits([
               ...storedHabits,
-              { id: name, name: name, createdAt: new Date() },
+              {
+                id: crypto.randomUUID(),
+                name: name,
+                createdAt: new Date(),
+                isChecked: isChecked,
+                daysSelected: daysSelected,
+              },
             ]);
-            setName('');
+            // setName('');
+            setIsChecked(false);
           }}
         >
-          Add Habit
+          + Add Habit
         </button>
       </form>
 
@@ -42,21 +51,12 @@ export default function HabitForm() {
           <p>No habits added yet.</p>
         ) : (
           <ul>
-            {storedHabits.map((habit) => (
-              <li key={habit.id}>
-                {habit.name}
-                {''}
-                <button
-                  onClick={() => {
-                    setStoredHabits(
-                      storedHabits.filter((h) => h.name !== habit.name),
-                    );
-                  }}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
+            <HabitCard
+              storedHabits={storedHabits}
+              setStoredHabits={setStoredHabits}
+              setIsChecked={setIsChecked}
+			  setDaysSelected={setDaysSelected}
+            />
           </ul>
         )}
       </div>

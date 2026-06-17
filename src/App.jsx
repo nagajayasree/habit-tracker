@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <h1>Welcome to My Habit Tracker</h1>
+        <h1>My Habits</h1>
         <HabitForm />
       </div>
     </>
