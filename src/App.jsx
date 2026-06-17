@@ -3,12 +3,19 @@ import HabitForm from './components/HabitForm';
 
 function App() {
   return (
-    <>
-      <div className="App">
+    <div className="App" style={{ display: 'flex', flexDirection: 'column' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-evenly',
+        }}
+      >
         <h1>My Habits</h1>
-        <HabitForm />
+        <p>{new Date().toDateString()}</p>
       </div>
-    </>
+      <HabitForm />
+    </div>
   );
 }
 

@@ -60,14 +60,25 @@ export default function HabitCard({ habit, storedHabits, setStoredHabits }) {
 
   return (
     <div>
-      <input
-        type="checkbox"
-        checked={doneToday}
-        onChange={() => toggleDay(todayStr)}
-      />
-      {habit.name}
-      {streak > 0 && <span> 🔥 {streak}d</span>}
-      <button onClick={deleteHabit}>Delete</button>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '10px',
+          alignItems: 'baseline',
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={doneToday}
+          onChange={() => toggleDay(todayStr)}
+        />
+        {habit.name}
+        {streak > 0 && <span> 🔥 {streak}d</span>}
+        <button onClick={deleteHabit} style={styles.deleteButton}>
+          Delete
+        </button>
+      </div>
 
       <div style={styles.container}>
         <div style={styles.buttonGroup}>
@@ -96,8 +107,12 @@ export default function HabitCard({ habit, storedHabits, setStoredHabits }) {
 }
 
 const styles = {
-  container: { padding: '16px' },
-  buttonGroup: { display: 'flex', gap: '8px' },
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '20px',
+  },
+  buttonGroup: { display: 'flex', gap: '10px' },
   button: {
     width: '40px',
     height: '40px',
@@ -109,6 +124,17 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     transition: 'all 0.2s ease',
+  },
+  deleteButton: {
+    width: '80px',
+    height: '30px',
+    borderRadius: '10px',
+    border: '1px solid #d1d5db',
+    cursor: 'pointer',
+    fontWeight: '400',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonSelected: { backgroundColor: '#2563eb', color: '#ffffff' },
   buttonUnselected: { backgroundColor: '#ffffff' },
