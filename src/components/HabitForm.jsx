@@ -3,60 +3,60 @@ import HabitCard from './HabitCard';
 
 export default function HabitForm() {
   const [name, setName] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
-  const [daysSelected, setDaysSelected] = useState([]);
 
-  const [storedHabits, setStoredHabits] = useState(
-    JSON.parse(localStorage.getItem('habit')),
-  );
+  const [storedHabits, setStoredHabits] = useState(() => {
+    const saved = localStorage.getItem('habits');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
-    localStorage.setItem('habit', JSON.stringify(storedHabits));
+    localStorage.setItem('habits', JSON.stringify(storedHabits));
   }, [storedHabits]);
+
+  function handleAddHabit(e) {
+    e.preventDefault();
+    if (!name.trim()) return;
+
+    const createdDate = new Intl.DateTimeFormat('en-US').format(new Date());
+
+    setStoredHabits([
+      ...storedHabits,
+      {
+        id: crypto.randomUUID(),
+        name: name.trim(),
+        createdAt: createdDate,
+        completions: [],
+      },
+    ]);
+    setName('');
+  }
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleAddHabit}>
         <input
-        //   placeholder="Add a new habit.."
+          placeholder="Add a new habit.."
           required
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />{' '}
-        <button
-          type="button"
-          onClick={() => {
-            setStoredHabits([
-              ...storedHabits,
-              {
-                id: crypto.randomUUID(),
-                name: name,
-                createdAt: new Date(),
-                isChecked: isChecked,
-                daysSelected: daysSelected,
-              },
-            ]);
-            // setName('');
-            setIsChecked(false);
-          }}
-        >
-          + Add Habit
-        </button>
+        <button type="submit">+ Add Habit</button>
       </form>
 
       <div>
-        <h3>Saved Habits in Local Storage:</h3>
         {storedHabits.length === 0 ? (
           <p>No habits added yet.</p>
         ) : (
           <ul>
-            <HabitCard
-              storedHabits={storedHabits}
-              setStoredHabits={setStoredHabits}
-              setIsChecked={setIsChecked}
-			  setDaysSelected={setDaysSelected}
-            />
+            {storedHabits.map((habit) => (
+              <HabitCard
+                key={habit.id}
+                habit={habit}
+                storedHabits={storedHabits}
+                setStoredHabits={setStoredHabits}
+              />
+            ))}
           </ul>
         )}
       </div>
